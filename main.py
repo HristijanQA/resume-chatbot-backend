@@ -1,4 +1,5 @@
 import openai
+import os
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from openai import OpenAI
@@ -52,3 +53,6 @@ def chat_with_ai(question: dict):
         return {"response": response['choices'][0]['message']['content']}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+    
+if __name__ == '__main__':
+    app.run(debug=True, port=os.getenv("PORT", default=5000))
