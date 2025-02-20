@@ -1,5 +1,6 @@
 import openai
 import os
+import uvicorn 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from openai import OpenAI
@@ -43,7 +44,7 @@ def chat_with_ai(question: dict):
     
     try:
         prompt = f"Based on this resume data: {resume_data}\nHR asked: {question['text']}\nAnswer: "
-        client = OpenAI(api_key="api")
+        client = OpenAI(api_key="OPENAI_API_KEY")
         response = client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[{"role": "system", "content": "You are a helpful assistant answering HR-related questions about a resume."},
@@ -54,5 +55,6 @@ def chat_with_ai(question: dict):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
     
-if __name__ == '__main__':
-    app.run(debug=True, port=os.getenv("PORT", default=5000))
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 8000))  # Railway uses PORT, default to 8000
+    uvicorn.run("main:app", host="0.0.0.0", port=port)  # ✅ Correct for FastAPI
