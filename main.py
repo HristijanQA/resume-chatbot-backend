@@ -1,6 +1,6 @@
 import openai
 import os
-import uvicorn 
+ 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from openai import OpenAI
@@ -56,5 +56,5 @@ def chat_with_ai(question: dict):
         raise HTTPException(status_code=500, detail=str(e))
     
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 8000))  # Railway uses PORT, default to 8000
-    uvicorn.run("main:app", host="0.0.0.0", port=port)  # ✅ Correct for FastAPI
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)
